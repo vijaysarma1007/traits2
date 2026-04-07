@@ -1,5 +1,6 @@
 use std::fmt::{Debug, Display, Formatter, Result};
-
+use std::fs;
+use std::ops::Drop;
 
 enum AppleType {
     RedDelicious,
@@ -24,7 +25,6 @@ impl Debug for AppleType {
     }
 }
 
-
 struct Apple {
     kind: AppleType,
     price: f64,
@@ -32,13 +32,30 @@ struct Apple {
 
 impl Display for Apple {
     fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
-        write!(formatter, "{} for {}", self.kind, self.price)
+        formatter
+            .debug_struct("** Apple **")
+            .field("Kind", &self.kind)
+            .field("Price", &self.price)
+            .finish()
     }
 }
 
 impl Debug for Apple {
     fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
-        write!(formatter, "Apple ::: [Kind : {:?}, Price: {}]", self.kind, self.price)
+        write!(
+            formatter,
+            "Apple ::: [Kind : {:?}, Price: {}]",
+            self.kind, self.price
+        )
+    }
+}
+
+impl Drop for Apple {
+    fn drop(&mut self) {
+        match fs::remove_file("apple.txt") {
+            Ok(_) => println!("Goodbye, my sweet apple."),
+            Err(error) => eprintln!("Error deleting file : {error}"),
+        }
     }
 }
 
@@ -53,6 +70,6 @@ fn main() {
         price: 1.20,
     };
 
-    println!("{:?}", lunch);
-    println!("{:?}", dinner_snack);
+    println!("{}", lunch);
+    println!("{}", dinner_snack);
 }
