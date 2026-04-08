@@ -15,7 +15,6 @@ impl BusTrip {
     }
 }
 
-
 struct Flight {
     origin: String,
     destination: String,
@@ -38,7 +37,7 @@ impl PartialEq for Flight {
     }
 }
 
-impl PartialEq<BusTrip> for Flight{
+impl PartialEq<BusTrip> for Flight {
     fn eq(&self, other: &BusTrip) -> bool {
         self.time == other.time
     }
@@ -55,7 +54,7 @@ fn main() {
     println!("{}", b.ne(&c));
 
     let d = BusTrip::new("los Angeles", "Tokyo", "8:00");
-    println!("bustrip: {}", a==d);
+    println!("bustrip: {}", a == d);
     //println!("bustrip: {}", d==a);
 
     // println!("{}", 3 == 3);
